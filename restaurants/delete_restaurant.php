@@ -1,22 +1,19 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "it306_db";
+require_once(__DIR__ . "/../db.php");
 
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+$id = isset($_GET["id"]) ? $_GET["id"] : "";
 
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+
+if ($id == "") {
+    die("Restaurant ID missing.");
 }
 
-$sql = "DELETE FROM restaurants WHERE restaurant_id = 1";
+$sql = "DELETE FROM restaurants WHERE restaurant_id = $id";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Record deleted successfully";
+    header("Location: ../restaurants.php");
+    exit();
 } else {
     echo "Error deleting record: " . mysqli_error($conn);
 }
-
-mysqli_close($conn);
 ?>

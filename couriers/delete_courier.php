@@ -1,22 +1,16 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "it306_db";
+require_once(__DIR__ . "/../db.php");
 
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+$id = $_GET["id"];
 
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+if ($id == "") {
+    die("Courier ID missing.");
 }
 
-$sql = "DELETE FROM couriers WHERE courier_id = 1";
+$sql = "DELETE FROM couriers WHERE courier_id = $id";
 
-if (mysqli_query($conn, $sql)) {
-    echo "Courier record deleted successfully";
-} else {
-    echo "Error deleting record: " . mysqli_error($conn);
-}
+mysqli_query($conn, $sql);
 
-mysqli_close($conn);
+header("Location: ../couriers.php");
+exit();
 ?>

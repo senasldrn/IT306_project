@@ -20,123 +20,182 @@ $result = mysqli_query($conn, $sql);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Couriers</title>
+
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            padding: 30px;
+            background: linear-gradient(135deg, #1a0800, #0d0d0f);
+            padding: 35px;
         }
+
         .container {
             max-width: 1000px;
             margin: auto;
             background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.08);
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
         }
-        input, select, button, .btn {
-            padding: 8px 14px;
-            margin-right: 10px;
+
+        h1 {
+            color: #222;
+            margin-bottom: 15px;
+        }
+
+        .home-btn {
+            display: inline-block;
+            background: #ff6b35;
+            color: white;
+            padding: 9px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .home-btn:hover {
+            background: #e85a28;
+        }
+
+        form {
             margin-bottom: 10px;
         }
-        button, .btn {
-            background: #0077cc;
+
+        select {
+            padding: 9px;
+            margin-right: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 9px 16px;
+            background: #ff6b35;
             color: white;
             border: none;
-            text-decoration: none;
             border-radius: 6px;
             cursor: pointer;
+            font-weight: bold;
         }
-        button:hover, .btn:hover {
-            background: #005fa3;
+
+        button:hover {
+            background: #e85a28;
         }
+
+        .explain {
+            margin-top: 10px;
+            margin-bottom: 18px;
+            color: #444;
+            background: #fff4ef;
+            padding: 12px;
+            border-left: 4px solid #ff6b35;
+            border-radius: 6px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 15px;
         }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
+
         th, td {
-            padding: 10px;
+            border: 1px solid #ddd;
+            padding: 11px;
             text-align: left;
         }
+
         th {
-            background: #f0f0f0;
+            background: #f3f3f3;
+            color: #222;
         }
-        .explain {
-            margin-top: 10px;
-            margin-bottom: 15px;
-            color: #444;
-            background: #f9f9f9;
-            padding: 10px;
-            border-left: 4px solid #0077cc;
+
+        tr:nth-child(even) {
+            background: #fafafa;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Courier Page</h1>
 
-        <a class="btn" href="index.php">Home</a>
+<div class="container">
 
-        <form method="GET">
-            <select name="zone">
-                <option value="">All Zones</option>
-                <option value="A" <?php if($zone=="A") echo "selected"; ?>>A</option>
-                <option value="B" <?php if($zone=="B") echo "selected"; ?>>B</option>
-            </select>
+    <h1>Courier Page</h1>
 
-            <select name="availability">
-                <option value="">All</option>
-                <option value="1" <?php if($availability==="1") echo "selected"; ?>>Available</option>
-                <option value="0" <?php if($availability==="0") echo "selected"; ?>>Unavailable</option>
-            </select>
+    <a class="home-btn" href="index.php">Home</a>
+    <a href="couriers/add_courier.php" class="home-btn">Add Courier</a>
 
-            <button type="submit">Apply</button>
-        </form>
+    <form method="GET">
+        <select name="zone">
+            <option value="">All Zones</option>
+            <option value="A" <?php if($zone=="A") echo "selected"; ?>>A</option>
+            <option value="B" <?php if($zone=="B") echo "selected"; ?>>B</option>
+        </select>
 
-        <div class="explain">
-            <?php
-            if ($zone != '') echo "Filtering couriers in zone: <b>$zone</b>. ";
-            if ($availability !== '') {
-                if ($availability == "1") {
-                    echo "Showing only <b>available</b> couriers. ";
-                } else {
-                    echo "Showing only <b>unavailable</b> couriers. ";
-                }
-            }
-            if ($zone == '' && $availability === '') echo "Showing all couriers.";
-            ?>
-        </div>
+        <select name="availability">
+            <option value="">All</option>
+            <option value="1" <?php if($availability==="1") echo "selected"; ?>>Available</option>
+            <option value="0" <?php if($availability==="0") echo "selected"; ?>>Unavailable</option>
+        </select>
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Zone</th>
-                <th>Availability</th>
-                <th>Active Order Count</th>
-            </tr>
+        <button type="submit">Apply</button>
+    </form>
 
-            <?php
-            if (mysqli_num_rows($result) > 0) {
-                while($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $row["courier_id"] . "</td>";
-                    echo "<td>" . $row["name"] . "</td>";
-                    echo "<td>" . $row["zone"] . "</td>";
-                    echo "<td>" . $row["availability"] . "</td>";
-                    echo "<td>" . $row["active_order_count"] . "</td>";
-                    echo "</tr>";
-                }
+    <div class="explain">
+        <?php
+        if ($zone != '') echo "Filtering couriers in zone: <b>$zone</b>. ";
+
+        if ($availability !== '') {
+            if ($availability == "1") {
+                echo "Showing only <b>available</b> couriers.";
             } else {
-                echo "<tr><td colspan='5'>No couriers found.</td></tr>";
+                echo "Showing only <b>unavailable</b> couriers.";
             }
-            ?>
-        </table>
+        }
+
+        if ($zone == '' && $availability === '') {
+            echo "Showing all couriers.";
+        }
+        ?>
     </div>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Zone</th>
+            <th>Availability</th>
+            <th>Active Order Count</th>
+            <th>Actions</th>
+            <tr>
+
+</tr>
+        </tr>
+
+        <?php
+        if (mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                echo "<td>" . $row["courier_id"] . "</td>";
+                echo "<td>" . $row["name"] . "</td>";
+                echo "<td>" . $row["zone"] . "</td>";
+                echo "<td>" . $row["availability"] . "</td>";
+                echo "<td>" . $row["active_order_count"] . "</td>";
+                echo "<td>
+                    <a href='couriers/edit_courier.php?id=" . $row["courier_id"] . "' class='home-btn'>Edit</a>
+                    <a href='couriers/delete_courier.php?id=" . $row["courier_id"] . "' class='home-btn'>Delete</a>
+                </td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='6'>No couriers found.</td></tr>";
+        }
+        ?>
+    </table>
+
+</div>
+
 </body>
 </html>

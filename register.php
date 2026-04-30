@@ -37,117 +37,144 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a0800, #0d0d0f);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
         }
-        .box {
-            width: 400px;
-            background: white;
+
+        .register-box {
+            width: 360px;
+            background-color: white;
             padding: 35px;
-            border-radius: 14px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
+
         h1 {
-            text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
+            color: #222;
         }
-        p {
-            text-align: center;
-            color: #666;
+
+        .subtitle {
+            color: #777;
+            font-size: 14px;
             margin-bottom: 25px;
         }
+
         .form-group {
-            margin-bottom: 16px;
+            text-align: left;
+            margin-bottom: 15px;
         }
+
         label {
             display: block;
-            margin-bottom: 6px;
+            font-size: 13px;
             font-weight: bold;
+            color: #444;
+            margin-bottom: 6px;
         }
+
         input {
             width: 100%;
             padding: 11px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
+            border-radius: 7px;
+            font-size: 14px;
         }
+
+        input:focus {
+            border-color: #ff6b35;
+            outline: none;
+        }
+
         .btn {
             width: 100%;
             padding: 12px;
-            background: #0077cc;
-            color: white;
+            background-color: #ff6b35;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            color: white;
+            border-radius: 7px;
             font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
         }
+
         .btn:hover {
-            background: #005fa3;
+            background-color: #e85a28;
         }
+
         .success {
             margin-top: 15px;
-            color: #1b5e20;
-            background: #e8f5e9;
-            padding: 10px;
-            border-radius: 8px;
+            color: green;
+            font-size: 14px;
         }
+
         .error {
             margin-top: 15px;
-            color: #c62828;
-            background: #fdeaea;
-            padding: 10px;
-            border-radius: 8px;
+            color: red;
+            font-size: 14px;
         }
-        .link {
-            margin-top: 18px;
-            text-align: center;
+
+        .login-link {
+            margin-top: 22px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .login-link a {
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
+
 <body>
-    <div class="box">
-        <h1>Register</h1>
-        <p>Create a new user account</p>
+
+    <div class="register-box">
+        <h1>Create Account</h1>
+        <p class="subtitle">Register to use the delivery platform</p>
 
         <form method="POST">
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" name="username" required>
+                <input type="text" name="username" placeholder="Choose username" required>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" required>
+                <input type="email" name="email" placeholder="Enter email" required>
             </div>
 
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" placeholder="Create password" required>
             </div>
 
             <button type="submit" class="btn">Register</button>
         </form>
 
-        <?php if ($message != ""): ?>
+        <?php if ($message != "") { ?>
             <div class="success"><?php echo $message; ?></div>
-        <?php endif; ?>
+        <?php } ?>
 
-        <?php if ($error != ""): ?>
+        <?php if ($error != "") { ?>
             <div class="error"><?php echo $error; ?></div>
-        <?php endif; ?>
+        <?php } ?>
 
-        <div class="link">
-            <a href="login.php">Go to Login</a>
+        <div class="login-link">
+            Already have an account? <a href="login.php">Login</a>
         </div>
     </div>
+
 </body>
 </html>
