@@ -18,9 +18,7 @@ foreach ($_SESSION['cart'] as $item) {
     $rid = $item['restaurant_id'];
     $name = mysqli_real_escape_string($conn, $item['name']);
     $price = isset($item['price']) ? $item['price'] : 0;
-
-    $sql = "INSERT INTO order_items (order_id, restaurant_id, product_name, price, quantity)
-            VALUES ($order_id, $rid, '$name', $price, 1)";
+    $sql = "INSERT INTO order_items (order_id, restaurant_id, product_name, price, quantity) VALUES ($order_id, $rid, '$name', $price, 1)";
     mysqli_query($conn, $sql);
 }
 
@@ -46,13 +44,11 @@ unset($_SESSION['cart']);
     <div class="icon">📦</div>
     <h1>Order Created!</h1>
     <p style="color:#777;">Your order has been placed successfully.</p>
-
     <div class="info">
         <b>Order ID:</b> #<?php echo $order_id; ?><br>
         <b>Zone:</b> <?php echo htmlspecialchars($zone); ?><br>
         <b>Status:</b> Pending
     </div>
-
     <a class="btn" href="assign_courier.php?order_id=<?php echo $order_id; ?>">Assign Courier →</a>
 </div>
 </body>
