@@ -20,6 +20,8 @@ session_start();
         .btn:hover { background: #e85a28; }
         .btn-secondary { background: #555; margin-right: 10px; }
         .btn-secondary:hover { background: #333; }
+        .remove-btn { color: #e74c3c; font-weight: bold; text-decoration: none; font-size: 18px; }
+        .remove-btn:hover { color: #c0392b; }
         .empty { text-align: center; padding: 40px; color: #888; }
         .actions { margin-top: 20px; }
     </style>
@@ -27,6 +29,7 @@ session_start();
 <body>
 <div class="container">
     <h1>🛒 Your Cart</h1>
+
     <?php if (empty($_SESSION['cart'])): ?>
         <div class="empty">
             <p>Your cart is empty.</p>
@@ -35,24 +38,31 @@ session_start();
     <?php else: ?>
         <?php $zone = $_SESSION['cart'][0]['zone']; ?>
         <div class="zone-badge">Zone: <?php echo htmlspecialchars($zone); ?></div>
+
         <table>
-            <tr><th>Product</th><th>Price</th></tr>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
             <?php
             $total = 0;
-            foreach ($_SESSION['cart'] as $item):
+            foreach ($_SESSION['cart'] as $key => $item):
                 $price = isset($item['price']) ? $item['price'] : 0;
                 $total += $price;
             ?>
             <tr>
                 <td><?php echo htmlspecialchars($item['name']); ?></td>
                 <td><?php echo number_format($price, 2); ?> TL</td>
+                <td><a href="remove_from_cart.php?index=<?php echo $key; ?>" class="remove-btn">✕</a></td>
             </tr>
             <?php endforeach; ?>
             <tr class="total-row">
-                <td>Total</td>
+                <td colspan="2">Total</td>
                 <td><?php echo number_format($total, 2); ?> TL</td>
             </tr>
         </table>
+
         <div class="actions">
             <a class="btn btn-secondary" href="restaurants.php">← Add More</a>
             <a class="btn" href="create_order.php">Create Order</a>
