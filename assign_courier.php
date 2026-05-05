@@ -11,11 +11,7 @@ $result = mysqli_query($conn, "SELECT zone FROM orders WHERE id=$order_id");
 $row = mysqli_fetch_assoc($result);
 $zone = $row['zone'];
 
-$sql = "SELECT * FROM couriers
-        WHERE zone='$zone' AND availability=1
-        ORDER BY active_order_count ASC
-        LIMIT 1";
-
+$sql = "SELECT * FROM couriers WHERE zone='$zone' AND availability=1 ORDER BY active_order_count ASC LIMIT 1";
 $result = mysqli_query($conn, $sql);
 $courier = ($result && mysqli_num_rows($result) > 0) ? mysqli_fetch_assoc($result) : null;
 
@@ -47,14 +43,12 @@ if ($courier) {
     <?php if ($courier): ?>
         <div class="icon">🛵</div>
         <h1>Courier Assigned!</h1>
-
         <div class="info">
             <b>Courier:</b> <?php echo htmlspecialchars($courier['name']); ?><br>
             <b>Zone:</b> <?php echo htmlspecialchars($courier['zone']); ?><br>
             <b>Active Orders:</b> <?php echo $courier['active_order_count']; ?><br>
             <b>Order #:</b> <?php echo $order_id; ?>
         </div>
-
         <div class="rules">
             <b>Assignment Rules:</b><br>
             ✓ Same delivery zone<br>
@@ -64,11 +58,8 @@ if ($courier) {
     <?php else: ?>
         <div class="icon">⚠️</div>
         <h1>No Courier Available</h1>
-        <div class="error">
-            No available courier found in zone <b><?php echo htmlspecialchars($zone); ?></b> at the moment.
-        </div>
+        <div class="error">No available courier found in zone <b><?php echo htmlspecialchars($zone); ?></b>.</div>
     <?php endif; ?>
-
     <a class="btn" href="index.php">← Back to Home</a>
 </div>
 </body>
