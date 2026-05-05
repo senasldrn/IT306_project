@@ -27,7 +27,6 @@ session_start();
 <body>
 <div class="container">
     <h1>🛒 Your Cart</h1>
-
     <?php if (empty($_SESSION['cart'])): ?>
         <div class="empty">
             <p>Your cart is empty.</p>
@@ -36,12 +35,8 @@ session_start();
     <?php else: ?>
         <?php $zone = $_SESSION['cart'][0]['zone']; ?>
         <div class="zone-badge">Zone: <?php echo htmlspecialchars($zone); ?></div>
-
         <table>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-            </tr>
+            <tr><th>Product</th><th>Price</th></tr>
             <?php
             $total = 0;
             foreach ($_SESSION['cart'] as $item):
@@ -58,7 +53,6 @@ session_start();
                 <td><?php echo number_format($total, 2); ?> TL</td>
             </tr>
         </table>
-
         <div class="actions">
             <a class="btn btn-secondary" href="restaurants.php">← Add More</a>
             <a class="btn" href="create_order.php">Create Order</a>
