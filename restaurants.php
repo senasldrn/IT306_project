@@ -6,20 +6,12 @@ $category = isset($_GET['category']) ? $_GET['category'] : '';
 $zone = isset($_GET['zone']) ? $_GET['zone'] : '';
 
 $sql = "SELECT * FROM restaurants WHERE 1=1";
-
-if ($search != '') {
-    $sql .= " AND name LIKE '%$search%'";
-}
-if ($category != '') {
-    $sql .= " AND category = '$category'";
-}
-if ($zone != '') {
-    $sql .= " AND zone = '$zone'";
-}
+if ($search != '') $sql .= " AND name LIKE '%$search%'";
+if ($category != '') $sql .= " AND category = '$category'";
+if ($zone != '') $sql .= " AND zone = '$zone'";
 
 $result = mysqli_query($conn, $sql);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,18 +34,14 @@ $result = mysqli_query($conn, $sql);
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1>Restaurant Page</h1>
-
     <div class="top-links">
         <a class="btn" href="index.php">Home</a>
         <a href="restaurants/add_restaurant.php" class="btn">Add Restaurant</a>
     </div>
-
     <form method="GET">
         <input type="text" name="search" placeholder="Search by name" value="<?php echo htmlspecialchars($search); ?>">
-
         <select name="category">
             <option value="">All Categories</option>
             <option value="Fast Food" <?php if($category=="Fast Food") echo "selected"; ?>>Fast Food</option>
@@ -63,16 +51,13 @@ $result = mysqli_query($conn, $sql);
             <option value="Turkish" <?php if($category=="Turkish") echo "selected"; ?>>Turkish</option>
             <option value="Vegan" <?php if($category=="Vegan") echo "selected"; ?>>Vegan</option>
         </select>
-
         <select name="zone">
             <option value="">All Zones</option>
             <option value="A" <?php if($zone=="A") echo "selected"; ?>>A</option>
             <option value="B" <?php if($zone=="B") echo "selected"; ?>>B</option>
         </select>
-
         <button type="submit">Apply</button>
     </form>
-
     <div class="explain">
         <?php
         if ($search != '') echo "Search results for: <b>" . htmlspecialchars($search) . "</b>. ";
@@ -81,15 +66,8 @@ $result = mysqli_query($conn, $sql);
         if ($search == '' && $category == '' && $zone == '') echo "Showing all restaurants.";
         ?>
     </div>
-
     <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Zone</th>
-            <th>Actions</th>
-        </tr>
+        <tr><th>ID</th><th>Name</th><th>Category</th><th>Zone</th><th>Actions</th></tr>
         <?php
         if (mysqli_num_rows($result) > 0) {
             while($row = mysqli_fetch_assoc($result)) {
@@ -111,6 +89,5 @@ $result = mysqli_query($conn, $sql);
         ?>
     </table>
 </div>
-
 </body>
 </html>
