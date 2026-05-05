@@ -180,8 +180,12 @@ $result = mysqli_query($conn, $sql);
                 echo "<td>" . $row["category"] . "</td>";
                 echo "<td>" . $row["zone"] . "</td>";
                 echo "<td>
-                        <a href='restaurants/edit_restaurant.php?id=" . $row["restaurant_id"] . "' class='btn'>Edit</a>
-                        <a href='restaurants/delete_restaurant.php?id=" . $row["restaurant_id"] . "' class='btn delete-btn'>Delete</a>
+                <a href='cart.php?restaurant_id=" . $row["restaurant_id"] . "&zone=" . $row["zone"] . "&name=" . $row["name"] . "' class='btn'>Add to Cart</a>
+
+                <a href='restaurants/edit_restaurant.php?id=" . $row["restaurant_id"] . "' class='btn'>Edit</a>
+
+                <a href='restaurants/delete_restaurant.php?id=" . $row["restaurant_id"] . "' class='btn'>Delete</a>
+                        
                       </td>";
                 echo "</tr>";
             }
