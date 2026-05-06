@@ -1,26 +1,36 @@
 <?php
 require_once(__DIR__ . "/../db.php");
 
-$id = $_GET["id"];
+$id = $_GET["id"] ?? "";
 
-$sql = "SELECT * FROM couriers WHERE courier_id = $id";
-$result = mysqli_query($conn, $sql);
+$sql = "SELECT * FROM couriers WHERE courier_id = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
 $courier = mysqli_fetch_assoc($result);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $name = $_POST["name"];
     $zone = $_POST["zone"];
     $availability = $_POST["availability"];
     $active_order_count = $_POST["active_order_count"];
 
     $sql = "UPDATE couriers 
-            SET name='$name', zone='$zone', availability='$availability', active_order_count='$active_order_count'
-            WHERE courier_id=$id";
+            SET name = ?, zone = ?, availability = ?, active_order_count = ?
+            WHERE courier_id = ?";
 
-    mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ssiii", $name, $zone, $availability, $active_order_count, $id);
 
-    header("Location: ../couriers.php");
-    exit();
+    if (mysqli_stmt_execute($stmt)) {
+        header("Location: ../couriers.php");
+        exit();
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
 }
 ?>
 

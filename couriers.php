@@ -2,18 +2,35 @@
 session_start();
 require_once("db.php");
 
-$zone = isset($_GET['zone']) ? $_GET['zone'] : '';
-$availability = isset($_GET['availability']) ? $_GET['availability'] : '';
-
 $zone = $_GET["zone"] ?? "";
+$availability = $_GET["availability"] ?? "";
 
-if ($zone != "") {
+if ($zone != "" && $availability != "") {
+    $sql = "SELECT * FROM couriers WHERE zone = ? AND availability = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "si", $zone, $availability);
+
+    $explanation = "Showing couriers in zone: " . $zone . " with availability: " . $availability;
+}
+elseif ($zone != "") {
     $sql = "SELECT * FROM couriers WHERE zone = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $zone);
 
     $explanation = "Showing couriers in zone: " . $zone;
-} else {
+}
+elseif ($availability != "") {
+    $sql = "SELECT * FROM couriers WHERE availability = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $availability);
+
+    if ($availability == 1) {
+        $explanation = "Showing available couriers.";
+    } else {
+        $explanation = "Showing unavailable couriers.";
+    }
+}
+else {
     $sql = "SELECT * FROM couriers";
     $stmt = mysqli_prepare($conn, $sql);
 

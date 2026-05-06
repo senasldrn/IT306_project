@@ -12,7 +12,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $active_order_count = $_POST["active_order_count"];
 
     $sql = "INSERT INTO couriers (name, zone, availability, active_order_count)
-            VALUES ('$name', '$zone', '$availability', '$active_order_count')";
+        VALUES (?, ?, ?, ?)";
+
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ssii", $name, $zone, $availability, $active_order_count);
+
+    if (mysqli_stmt_execute($stmt)) {
+        echo "Courier added successfully!";
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
 
     mysqli_query($conn, $sql);
 

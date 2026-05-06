@@ -14,16 +14,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $checkSql = "SELECT * FROM users WHERE username = '$username' OR email = '$email'";
-        $checkResult = mysqli_query($conn, $checkSql);
+        $checkSql = "SELECT * FROM users WHERE username = ? OR email = ?";
+        $checkStmt = mysqli_prepare($conn, $checkSql);
+        mysqli_stmt_bind_param($checkStmt, "ss", $username, $email);
+        mysqli_stmt_execute($checkStmt);
+        $checkResult = mysqli_stmt_get_result($checkStmt);
 
         if (mysqli_num_rows($checkResult) > 0) {
             $error = "Username or email already exists.";
         } else {
             $sql = "INSERT INTO users (username, email, password)
-                    VALUES ('$username', '$email', '$hashedPassword')";
+                    VALUES (?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "sss", $username, $email, $hashedPassword);
 
-            if (mysqli_query($conn, $sql)) {
+            if (mysqli_stmt_execute($stmt)) {
                 $message = "Registration successful. You can now login.";
             } else {
                 $error = "Error: " . mysqli_error($conn);
