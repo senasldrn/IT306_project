@@ -1,16 +1,16 @@
 <?php
 require_once(__DIR__ . "/../db.php");
 
-$id = isset($_GET["id"]) ? $_GET["id"] : "";
+$id = isset($_GET["id"]) ? intval($_GET["id"]) : 0;
 
-if ($id == "") {
+if ($id == 0) {
     die("Courier ID missing.");
 }
 
-$sql = "DELETE FROM couriers WHERE courier_id = ?";
-$stmt = mysqli_prepare($conn, $sql);
+$stmt = mysqli_prepare($conn, "DELETE FROM couriers WHERE courier_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $id);
 mysqli_stmt_execute($stmt);
+mysqli_stmt_close($stmt);
 
 header("Location: ../couriers.php");
 exit();
