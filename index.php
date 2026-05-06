@@ -62,17 +62,6 @@ $username = htmlspecialchars($_SESSION["user"]);
         text-align: center;
     }
 
-    .badge {
-        display: inline-block;
-        background: rgba(255,107,53,0.15);
-        color: #ff6b35;
-        padding: 7px 16px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        margin-bottom: 22px;
-    }
-
     h1 {
         font-size: 38px;
         line-height: 1.25;
@@ -93,6 +82,7 @@ $username = htmlspecialchars($_SESSION["user"]);
         display: flex;
         gap: 20px;
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .card {
@@ -103,6 +93,7 @@ $username = htmlspecialchars($_SESSION["user"]);
         border-radius: 15px;
         text-decoration: none;
         box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        transition: transform 0.2s;
     }
 
     .card:hover {
@@ -134,7 +125,7 @@ $username = htmlspecialchars($_SESSION["user"]);
 <body>
 
 <nav>
-    <div class="logo">🛵</div>
+    <div class="logo">🛵 DeliveryApp</div>
     <div class="nav-right">
         Welcome, <span><?php echo $username; ?></span>
         <a href="logout.php" class="logout">Logout</a>
@@ -157,7 +148,7 @@ $username = htmlspecialchars($_SESSION["user"]);
         <a href="restaurants.php" class="card orange">
             <div class="icon">🍽️</div>
             <h3>Restaurants</h3>
-            <p>View, search and filter restaurants.</p>
+            <p>View, search and filter restaurants. Add items to cart and place orders.</p>
         </a>
 
         <a href="couriers.php" class="card green">
@@ -166,10 +157,10 @@ $username = htmlspecialchars($_SESSION["user"]);
             <p>View couriers by zone and availability.</p>
         </a>
 
-        <a href="assign_courier.php" class="card yellow">
-            <div class="icon">📦</div>
-            <h3>Assign Courier</h3>
-            <p>Assign a courier with explanation.</p>
+        <a href="view_cart.php" class="card yellow">
+            <div class="icon">🛒</div>
+            <h3>View Cart</h3>
+            <p>Check your cart and create an order to assign a courier.</p>
         </a>
 
     </div>
