@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../db.php';
+require_once(__DIR__ . "/../db.php");
 
 $restaurant_id = intval($_GET['restaurant_id']);
 $zone = $_GET['zone'];
