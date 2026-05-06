@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("db.php");
 
 $zone = isset($_GET['zone']) ? $_GET['zone'] : '';
