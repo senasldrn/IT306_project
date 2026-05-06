@@ -5,16 +5,23 @@ require_once("db.php");
 $zone = isset($_GET['zone']) ? $_GET['zone'] : '';
 $availability = isset($_GET['availability']) ? $_GET['availability'] : '';
 
-$sql = "SELECT * FROM couriers WHERE 1=1";
+$zone = $_GET["zone"] ?? "";
 
-if ($zone != '') {
-    $sql .= " AND zone = '$zone'";
-}
-if ($availability != '') {
-    $sql .= " AND availability = '$availability'";
+if ($zone != "") {
+    $sql = "SELECT * FROM couriers WHERE zone = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $zone);
+
+    $explanation = "Showing couriers in zone: " . $zone;
+} else {
+    $sql = "SELECT * FROM couriers";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    $explanation = "Showing all couriers.";
 }
 
-$result = mysqli_query($conn, $sql);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>

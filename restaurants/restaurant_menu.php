@@ -7,6 +7,9 @@ $zone = $_GET['zone'];
 $restaurant_name = $_GET['name'];
 
 $result = mysqli_query($conn, "SELECT * FROM products WHERE restaurant_id=$restaurant_id");
+if (!$result) {
+    die("SQL Error: " . mysqli_error($conn));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

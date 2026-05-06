@@ -6,12 +6,27 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 $zone = isset($_GET['zone']) ? $_GET['zone'] : '';
 
-$sql = "SELECT * FROM restaurants WHERE 1=1";
-if ($search != '') $sql .= " AND name LIKE '%$search%'";
-if ($category != '') $sql .= " AND category = '$category'";
-if ($zone != '') $sql .= " AND zone = '$zone'";
+$search = $_GET["search"] ?? "";
+$category = $_GET["category"] ?? "";
+$zone = $_GET["zone"] ?? "";
 
-$result = mysqli_query($conn, $sql);
+if ($search != "" && $category != "" && $zone != "") {
+    $sql = "SELECT * FROM restaurants WHERE name LIKE ? AND category = ? AND zone = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    $param = "%" . $search . "%";
+    mysqli_stmt_bind_param($stmt, "sss", $param, $category, $zone);
+
+    $explanation = "Search results for: <b>$search</b>. Filtering by category: <b>$category</b>. Showing restaurants in zone: <b>$zone</b>.";
+}
+else {
+    $sql = "SELECT * FROM restaurants";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    $explanation = "Showing all restaurants.";
+}
+
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 ?>
 <!DOCTYPE html>
 <html lang="en">
